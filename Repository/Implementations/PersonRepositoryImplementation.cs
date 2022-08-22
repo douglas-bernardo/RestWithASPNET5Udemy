@@ -3,23 +3,23 @@ using System.Linq;
 using RestWithASPNETUdemy.Model;
 using RestWithASPNETUdemy.Model.Context;
 
-namespace RestWithASPNETUdemy.Services.Implementations
+namespace RestWithASPNETUdemy.Repository.Implementations
 {
-    public class PersonServiceImplementation : IPersonService
+    public class PersonRepositoryImplementation : IPersonRepository
     {
         private MySQLContext _context;
 
-        public PersonServiceImplementation(MySQLContext context)
+        public PersonRepositoryImplementation(MySQLContext context)
         {
             _context = context;
         }
 
-        List<Person> IPersonService.FindAll()
+        List<Person> IPersonRepository.FindAll()
         {
             return _context.Persons.ToList();
         }
 
-        Person IPersonService.Create(Person person)
+        Person IPersonRepository.Create(Person person)
         {
             try
             {
@@ -33,12 +33,12 @@ namespace RestWithASPNETUdemy.Services.Implementations
             }
         }
 
-        Person IPersonService.FindById(long id)
+        Person IPersonRepository.FindById(long id)
         {
             return _context.Persons.SingleOrDefault(p => p.Id.Equals(id));
         }
 
-        Person IPersonService.Update(Person person)
+        Person IPersonRepository.Update(Person person)
         {
             if (!Exists(person.Id)) return new Person();
 
@@ -59,7 +59,7 @@ namespace RestWithASPNETUdemy.Services.Implementations
             return person;
         }
 
-        void IPersonService.Delete(long id)
+        void IPersonRepository.Delete(long id)
         {
             var result = _context.Persons.SingleOrDefault(p => p.Id.Equals(id));
 
@@ -78,7 +78,7 @@ namespace RestWithASPNETUdemy.Services.Implementations
 
         }
 
-        private bool Exists(long id)
+        public bool Exists(long id)
         {
             return _context.Persons.Any(p => p.Id.Equals(id));
         }
